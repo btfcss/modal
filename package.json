@@ -1,0 +1,25 @@
+{
+  "name": "@btfcss/modal",
+  "version": "1.0.0",
+  "description": "Library for managing Beautiful CSS modals",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/btfcss/modal.git"
+  },
+  "keywords": [
+    "Beautiful",
+    "CSS",
+    "modal",
+    "dialog"
+  ],
+  "author": "Merlin Chatou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/btfcss/modal/issues"
+  },
+  "homepage": "https://github.com/btfcss/modal#readme"
+}
