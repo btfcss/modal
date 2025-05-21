@@ -33,7 +33,7 @@ export const openModal = (id) => {
   if (id==currentModalId) return; 
 
   // If a modal is currently opened, close the modal before opening the new one
-  if (currentModalId) { closeModal(currentModalId, targetModalId); return; }
+  if (currentModalId) { closeModal(currentModalId, id); return; }
 
   const modalEl = document.getElementById(id);
   modalEl.classList.add('modal-is-opening')
