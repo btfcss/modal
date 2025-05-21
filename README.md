@@ -1,23 +1,23 @@
-# modal
+# @btfcss/modal
 
-This npm package is a library for managing Beautiful CSS modals.
+**A lightweight modal manager for [Beautiful CSS](https://your-css-toolkit-link.com), using native HTML `<dialog>` elements.**
 
-## Install 
 
-Import the package
+
+## Installation
 
 ```bash
-npm i @btfcss/modal
+npm install @btfcss/modal
 ```
+
 
 ## Usage
 
-### HTML
+### HTML Structure
 
-This package is designed to work with the Beautiful CSS toolkit. 
-Modals are based on the `dialog` HTML tag: 
+Modals use the native `<dialog>` element and must include the `modal` class. The child container must have the `modal-content` class.
 
-``` html
+```html
 <dialog id="example-modal" class="modal" data-close-modal>
   <div class="modal-content">
     <header>
@@ -29,30 +29,37 @@ Modals are based on the `dialog` HTML tag:
     <footer>
       <button data-close-modal>Close</button>
     </footer>
-    </div>
+  </div>
 </dialog>
 ```
-The `dialog` child tag must have the `modal-content` class. 
 
-When the element with the attribute `data-close-modal` is clicked, the current modal is closed. 
+### Triggering Modals
 
-The element with the attribute `data-open-modal` opens the modal with the ID as attribute value. 
+#### Open Modal (HTML)
 
-``` html
+To open a modal via HTML, use the `data-open-modal` attribute and set its value to the modal's `id`:
+
+```html
 <button data-open-modal="example-modal">Launch demo modal</button>
 ```
 
-### CSS
+#### Close Modal (HTML)
 
-The package expect animation on opening and closing the modal. The animation must be set to the class `modal-is-opening` and `modal-is-closing`. Here is an example:
+Clicking any element with the `data-close-modal` attribute will close the modal it's in.
 
-``` css
+
+
+### CSS Animations
+
+Animation on opening and closing are **required**. To animate modal transitions, apply styles to the `modal-is-opening` and `modal-is-closing` classes:
+
+```css
 .modal.modal-is-opening {
-  animation: modal-animation 300ms;
+  animation: modal-animation 300ms ease-out;
 }
 
 .modal.modal-is-closing {
-  animation: modal-animation reverse 200ms;
+  animation: modal-animation reverse 200ms ease-in;
 }
 
 @keyframes modal-animation {
@@ -61,40 +68,47 @@ The package expect animation on opening and closing the modal. The animation mus
 }
 ```
 
-### Open Modal
 
-The function `openModal(id)` open the modal with a given ID. If another modal is currently opened, it is closed prior to the opening
+### JavaScript API
 
-```js
-import { openModal } from "@btfcss/modal";
-
-// Open the modal
-openModal ('example-modal');
-```
-
-### Close Modal
-
-The function `closeModal(id)` close the modal with a given ID. 
+Import modal control functions from the package:
 
 ```js
-import { closeModal } from "@btfcss/modal";
-
-// Open the modal
-closeModal ('example-modal');
+import { openModal, closeModal, toggleModal } from "@btfcss/modal";
 ```
 
+#### `openModal(id: string)`
 
-### Toggle Modal
-
-The function `toggleModal(id)` toggle the modal with a given ID. 
+Opens the modal with the given ID. Closes any currently open modal first.
 
 ```js
-import { toggleModal } from "@btfcss/modal";
-
-// Open the modal
-toggleModal ('example-modal');
+openModal('example-modal');
 ```
+
+#### `closeModal(id: string)`
+
+Closes the modal with the specified ID.
+
+```js
+closeModal('example-modal');
+```
+
+#### `toggleModal(id: string)`
+
+Toggles the visibility of the modal.
+
+```js
+toggleModal('example-modal');
+```
+
+
 
 ## Full Example
 
-A full example is available on [Code Sandbox](https://codesandbox.io/p/sandbox/npm-playground-forked-jq6vcd)
+Explore a working demo on [CodeSandbox](https://codesandbox.io/p/sandbox/npm-playground-forked-jq6vcd)
+
+
+## Requirements
+
+* Works best with Beautiful CSS, but it's not required.
+* Assumes browser support for `<dialog>` (modern browsers only).
