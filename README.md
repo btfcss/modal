@@ -101,9 +101,17 @@ Toggles the visibility of the modal.
 toggleModal('example-modal');
 ```
 
+#### Events
+
+This library exposes four events :
+
+| Event | Description |
+| onModalShow | This event fires immediately when the show instance method is called. If caused by a click, the clicked element is available as the relatedTarget property of the event.
 
 
 ## Full Example
+
+
 
 Explore a working demo on [CodeSandbox](https://codesandbox.io/p/sandbox/npm-playground-forked-jq6vcd)
 

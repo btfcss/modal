@@ -1,10 +1,10 @@
 let currentModalId = null;
 
 // Events
-const eventShow = new Event("onModalShow");
-const eventShown = new Event("onModalShown");
-const eventHide = new Event("onModalHide");
-const eventHidden = new Event("onModalHidden");
+const eventShow = new Event("onModalOpen");
+const eventShown = new Event("onModalOpened");
+const eventClose = new Event("onModalHide");
+const eventClosed = new Event("onModalHidden");
 
 
 document.body.addEventListener('click', (event) => {
@@ -85,7 +85,7 @@ export const closeModal = (id, next) => {
 
   // Trigger the hide event
   const modalEl = document.getElementById(id);
-  modalEl.dispatchEvent(eventHide);
+  modalEl.dispatchEvent(eventClose);
 
   // Add the animation class
   modalEl.classList.add("modal-is-closing");
@@ -100,7 +100,7 @@ export const closeModal = (id, next) => {
     modalEl.close();
 
     // Dispatch the hidden event
-    modalEl.dispatchEvent(eventHidden);
+    modalEl.dispatchEvent(eventClosed);
 
     // No modal opened
     currentModalId = null;
