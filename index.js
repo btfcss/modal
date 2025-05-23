@@ -1,10 +1,10 @@
 let currentModalId = null;
 
 // Events
-const eventShow = new Event("onModalOpen");
-const eventShown = new Event("onModalOpened");
-const eventClose = new Event("onModalHide");
-const eventClosed = new Event("onModalHidden");
+const eventOpen = new Event("onModalOpen");
+const eventOpened = new Event("onModalOpened");
+const eventClose = new Event("onModalClose");
+const eventClosed = new Event("onModalClosed");
 
 
 document.body.addEventListener('click', (event) => {
@@ -46,8 +46,8 @@ export const openModal = (id, triggerElement) => {
 
   // Dispatch the show event
   const modalEl = document.getElementById(id);
-  eventShow.triggerElement = triggerElement;
-  modalEl.dispatchEvent(eventShow);
+  eventOpen.triggerElement = triggerElement;
+  modalEl.dispatchEvent(eventOpen);
 
   // Add the animation class
   modalEl.classList.add('modal-is-opening');
@@ -59,8 +59,8 @@ export const openModal = (id, triggerElement) => {
     modalEl.classList.remove('modal-is-opening');
 
     // Dispatch the shown event
-    eventShown.triggerElement = triggerElement;
-    modalEl.dispatchEvent(eventShown);
+    eventOpened.triggerElement = triggerElement;
+    modalEl.dispatchEvent(eventOpened);
   
   }, { once: true });
   

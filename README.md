@@ -122,7 +122,7 @@ You can listen for these events using standard JavaScript:
 
 ```js
 // Fired when openModal() is called
-modalElement.addEventListener('onModalShow', (e) => {
+modalElement.addEventListener('onModalOpen', (e) => {
   console.log('Modal is opening');
   if (e.triggerElement) {
     console.log('Triggered by:', e.triggerElement);
