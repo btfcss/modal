@@ -15,10 +15,10 @@ npm install @btfcss/modal
 
 ### HTML Structure
 
-Modals use the native `<dialog>` element and must include the `modal` class. The child container must have the `modal-content` class.
+Modals use the native `<dialog>` element. The child container must have the `modal-content` class.
 
 ```html
-<dialog id="example-modal" class="modal" data-close-modal>
+<dialog id="example-modal" data-close-modal>
   <div class="modal-content">
     <header>
       <h2 class="mt-0">Example Modal</h2>
@@ -101,17 +101,45 @@ Toggles the visibility of the modal.
 toggleModal('example-modal');
 ```
 
-#### Events
 
-This library exposes four events :
 
-| Event | Description |
-| onModalShow | This event fires immediately when the show instance method is called. If caused by a click, the clicked element is available as the relatedTarget property of the event.
+## Modal Events
+
+### Event Summary
+
+The library provides four custom modal-related events that can be used to hook into different stages of the modal's lifecycle:
+
+| **Event**       | **Description**  |
+| ---- | ---- |
+| `onModalOpen`   | Fired **immediately** when `openModal()` is called. If the modal was triggered by a user action (e.g., a click), the event includes a `triggerElement` property referencing the clicked element. |
+| `onModalOpened`  | Fired **after** the modal is fully visible to the user, following the completion of any CSS animations. If triggered by a user action, `triggerElement` will be available in the event object.   |
+| `onModalClose`  | Fired **immediately** when `closeModal()` is called. This event occurs before the closing animation starts.                                                                                      |
+| `onModalClosed` | Fired **after** the modal is fully hidden, once all CSS animations have completed.                                                               
+
+### Usage Example
+
+You can listen for these events using standard JavaScript:
+
+```js
+// Fired when openModal() is called
+modalElement.addEventListener('onModalShow', (e) => {
+  console.log('Modal is opening');
+  if (e.triggerElement) {
+    console.log('Triggered by:', e.triggerElement);
+  }
+});
+```
+
+```js
+// Fired when modal is fully hidden
+modalElement.addEventListener('onModalClosed', () => {
+  console.log('Modal has been hidden');
+});
+```
+
 
 
 ## Full Example
-
-
 
 Explore a working demo on [CodeSandbox](https://codesandbox.io/p/sandbox/npm-playground-forked-jq6vcd)
 
