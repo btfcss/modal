@@ -67,8 +67,9 @@ export const openModal = (id, triggerElement) => {
   // Show the modal (and trigger the  animation)
   modalEl.showModal();
 
-  // Scroll to top of modal
-  modalEl.querySelector('.modal-content:first-child').scrollIntoView();
+  // Scroll to top of modal if requested
+  if (modalEl.dataset.scrollTo === 'top')
+    modalEl.querySelector('.modal-content').scrollTo(top);
 
   // Set the modal as current modal
   currentModalId = id;
