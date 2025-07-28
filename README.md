@@ -105,9 +105,7 @@ toggleModal('example-modal');
 
 ## Scroll Behavior
 
-To ensure a modal opens scrolled to the top, add the `data-scroll-to="top"` attribute to the modal container.
-
-### Usage
+To ensure a modal opens scrolled to the top, add the `data-scroll-to="top"` attribute to the modal container:
 
 ```html
 <dialog id="example-modal" data-scroll-to="top">

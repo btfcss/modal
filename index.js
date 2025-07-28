@@ -13,9 +13,14 @@ document.body.addEventListener('click', (event) => {
   if (event.target.matches('[data-open-modal]')) openModal(event.target.dataset.openModal, event.target);
 
   // Check if modal close attribute exists
-  if (event.target.matches('[data-close-modal]')) closeModal(currentModalId);
-
+  if (event.target.matches('[data-close-modal]')) {
+    if (currentModalId == null) currentModalId = event.target.id;
+    closeModal(currentModalId);
+  }
 });
+
+
+
 
 
 /**
@@ -39,7 +44,7 @@ export const toggleModal = (id, triggerElement) => {
 export const openModal = (id, triggerElement) => {
 
   // If the modal is already opened, do nothing
-  if (id == currentModalId) return;
+  //if (id == currentModalId) return;
 
   // If a modal is currently opened, close the modal before opening the new one
   if (currentModalId) { closeModal(currentModalId, id); return; }
@@ -67,6 +72,8 @@ export const openModal = (id, triggerElement) => {
   // Show the modal (and trigger the  animation)
   modalEl.showModal();
 
+  modalEl.addEventListener('cancel', onEscapeKeyPressed, { once: true})
+
   // Scroll to top of modal if requested
   if (modalEl.dataset.scrollTo === 'top')
     modalEl.querySelector('.modal-content').scrollTo(top);
@@ -76,6 +83,18 @@ export const openModal = (id, triggerElement) => {
 }
 
 
+/**
+ * Handles the Escape key press event to close a modal.
+ *
+ * @param {object} event - The keyboard event triggered by the Escape key.
+ * @returns {void}
+ */
+const onEscapeKeyPressed = (event) => {
+  closeModal (event.target.id);
+  event.preventDefault();
+
+}
+
 
 /**
  * Close the modal with a given ID
@@ -83,10 +102,14 @@ export const openModal = (id, triggerElement) => {
  * @param {HTMLElement} [triggerElement] The element that triggered the modal closing (optional).
  */
 export const closeModal = (id, next) => {
+ 
 
   // Trigger the hide event
   const modalEl = document.getElementById(id);
   modalEl.dispatchEvent(eventClose);
+
+  // Remove the event listener
+  modalEl.removeEventListener('cancel', onEscapeKeyPressed);
 
   // Add the animation class
   modalEl.classList.add("modal-is-closing");
