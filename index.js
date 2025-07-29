@@ -7,6 +7,12 @@ const eventClose = new Event("onModalClose");
 const eventClosed = new Event("onModalClosed");
 
 
+/**
+ * Handles modal interactions:
+ * - Opens a modal when an element with [data-open-modal] is clicked
+ * - Closes a modal when an element with [data-close-modal] is clicked
+ * - Supports clicking outside the modal to close it (if implemented in `closeModal`)
+ */
 document.body.addEventListener('click', (event) => {
 
   // Check if modal target attribute exists
@@ -20,7 +26,28 @@ document.body.addEventListener('click', (event) => {
 });
 
 
-
+/**
+ * Handles global Escape key presses to close the currently open modal.
+ * 
+ * - Listens for 'keydown' events on the document body
+ * - When Escape is pressed:
+ *   - Finds any <dialog class="modal"> with the [open] attribute
+ *   - Closes it using closeModal()
+ *   - Prevents default Escape behavior (like exiting fullscreen or triggering native dialog cancel)
+ */
+document.body.addEventListener('keydown', function (event) {
+  // If the Escape key is pressed
+  if (event.key === 'Escape') {
+    // Find the active modal
+    const openModal = document.querySelector('.modal[open]');
+    if (openModal) {
+      // Close the modal
+      closeModal(openModal.id); 
+      // prevent default escape behavior (like exiting fullscreen or cancel current modal)
+      event.preventDefault(); 
+    }
+  }
+});
 
 
 /**
@@ -88,12 +115,13 @@ export const openModal = (id, triggerElement) => {
 
 /**
  * Handles the Escape key press event to close a modal.
+ * Shouldn't be called because the Escape key is trigger before the cancel event
+ * May be useful on other source of cancelation than Escape
  *
  * @param {object} event - The keyboard event triggered by the Escape key.
  * @returns {void}
  */
 const onEscapeKeyPressed = (event) => {
-
   // If the event is not cancelable, reset currentModalId
   if (!event.cancelable) {
     currentModalId = null;        
