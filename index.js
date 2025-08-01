@@ -1,4 +1,3 @@
-let currentModalId = null;
 
 // Events
 const eventOpen = new Event("onModalOpen");
@@ -20,8 +19,9 @@ document.body.addEventListener('click', (event) => {
 
   // Check if modal close attribute exists
   if (event.target.matches('[data-close-modal]')) {
-    if (currentModalId == null) currentModalId = event.target.id;
-    closeModal(currentModalId, event.target);
+    // If a modal is opened, close the modal
+    const openedModalId = document.querySelector('.modal[open')?.id;
+    if (openedModalId) closeModal(openedModalId, event.target);
   }
 });
 
@@ -71,10 +71,11 @@ export const toggleModal = (id, triggerElement) => {
 export const openModal = (id, triggerElement) => {
 
   // If the modal is already opened, do nothing
-  if (id == currentModalId) return;
+  const openedModalId = document.querySelector('.modal[open')?.id;
+  if (openedModalId && id == openedModalId) return;
 
   // If a modal is currently opened, close the modal before opening the new one
-  if (currentModalId) { closeModal(currentModalId, triggerElement, id); return; }
+  if (openedModalId) { closeModal(openedModalId, triggerElement, id); return; }
 
   // Dispatch the show event
   const modalEl = document.getElementById(id);
@@ -108,9 +109,6 @@ export const openModal = (id, triggerElement) => {
   if (modalEl.dataset.scrollTo === 'top') {
     modalEl.querySelector('.modal-content').scrollTo(top);
   }
-
-  // Set the modal as current modal
-  currentModalId = id;
 }
 
 
@@ -123,9 +121,8 @@ export const openModal = (id, triggerElement) => {
  * @returns {void}
  */
 const onEscapeKeyPressed = (event) => {
-  // If the event is not cancelable, reset currentModalId
+  // If the event is not cancelable,
   if (!event.cancelable) {
-    currentModalId = null;
     return;
   }
 
@@ -162,9 +159,6 @@ export const closeModal = (id, triggerElement, next) => {
 
     // Dispatch the hidden event
     modalEl.dispatchEvent(eventClosed);
-
-    // No modal opened
-    currentModalId = null;
 
     // Open the next modal if required
     if (next) openModal(next, triggerElement);
