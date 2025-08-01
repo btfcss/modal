@@ -1,6 +1,6 @@
 {
   "name": "@btfcss/modal",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Library for managing Beautiful CSS modals",
   "main": "index.js",
   "type": "module",

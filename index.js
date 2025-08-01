@@ -15,10 +15,10 @@ const eventClosed = new Event("onModalClosed");
 document.body.addEventListener('click', (event) => {
 
   // Check if modal target attribute exists
-  if (event.target.matches('[data-open-modal]')) openModal(event.target.dataset.openModal, event.target);
+  if (event.target && event.target.matches('[data-open-modal]')) openModal(event.target.dataset.openModal, event.target);
 
   // Check if modal close attribute exists
-  if (event.target.matches('[data-close-modal]')) {
+  if (event.target && event.target.matches('[data-close-modal]')) {
     // If a modal is opened, close the modal
     const openedModalId = document.querySelector('.modal[open')?.id;
     if (openedModalId) closeModal(openedModalId, event.target);
