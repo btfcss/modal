@@ -1,3 +1,4 @@
+import { preventDefault } from "svelte/legacy";
 
 // Events
 const eventOpen = new Event("onModalOpen");
@@ -15,13 +16,20 @@ const eventClosed = new Event("onModalClosed");
 document.body.addEventListener('click', (event) => {
 
   // Check if modal target attribute exists
-  if (event.target && event.target.matches('[data-open-modal]')) openModal(event.target.dataset.openModal, event.target);
+  const closestElement = event?.target?.closest('[data-open-modal]');
+  if (closestElement) {
+    openModal(closestElement.dataset.openModal, closestElement);
+    event.preventDefault();
+  }
 
   // Check if modal close attribute exists
-  if (event.target && event.target.matches('[data-close-modal]')) {
+  if (event?.target?.matches('[data-close-modal]')) {
     // If a modal is opened, close the modal
     const openedModalId = document.querySelector('.modal[open')?.id;
-    if (openedModalId) closeModal(openedModalId, event.target);
+    if (openedModalId) {
+      closeModal(openedModalId, event.target);
+      event.preventDefault();
+    }
   }
 });
 
