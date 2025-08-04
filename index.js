@@ -1,11 +1,12 @@
-import { preventDefault } from "svelte/legacy";
-
 // Events
 const eventOpen = new Event("onModalOpen");
 const eventOpened = new Event("onModalOpened");
 const eventClose = new Event("onModalClose");
 const eventClosed = new Event("onModalClosed");
 
+// Prevent adding listener twice
+let listenerClickAttached = false;
+let listenerKeydownAttached = false;
 
 /**
  * Handles modal interactions:
@@ -13,26 +14,32 @@ const eventClosed = new Event("onModalClosed");
  * - Closes a modal when an element with [data-close-modal] is clicked
  * - Supports clicking outside the modal to close it (if implemented in `closeModal`)
  */
-document.body.addEventListener('click', (event) => {
+const handleClick = () => {
+  
+  // Prevent attaching listener twice
+  if (listenerClickAttached) return;
+  listenerClickAttached = true;
 
-  // Check if modal target attribute exists
-  const closestElement = event?.target?.closest('[data-open-modal]');
-  if (closestElement) {
-    openModal(closestElement.dataset.openModal, closestElement);
-    event.preventDefault();
-  }
+  document.body.addEventListener('click', (event) => {
 
-  // Check if modal close attribute exists
-  if (event?.target?.matches('[data-close-modal]')) {
-    // If a modal is opened, close the modal
-    const openedModalId = document.querySelector('.modal[open')?.id;
-    if (openedModalId) {
-      closeModal(openedModalId, event.target);
+    // Check if modal target attribute exists
+    const closestElement = event?.target?.closest('[data-open-modal]');
+    if (closestElement) {
+      openModal(closestElement.dataset.openModal, closestElement);
       event.preventDefault();
     }
-  }
-});
 
+    // Check if modal close attribute exists
+    if (event?.target?.matches('[data-close-modal]')) {
+      // If a modal is opened, close the modal
+      const openedModalId = document.querySelector('.modal[open')?.id;
+      if (openedModalId) {
+        closeModal(openedModalId, event.target);
+        event.preventDefault();
+      }
+    }
+  });
+}
 
 /**
  * Handles global Escape key presses to close the currently open modal.
@@ -43,20 +50,26 @@ document.body.addEventListener('click', (event) => {
  *   - Closes it using closeModal()
  *   - Prevents default Escape behavior (like exiting fullscreen or triggering native dialog cancel)
  */
-document.body.addEventListener('keydown', function (event) {
-  // If the Escape key is pressed
-  if (event.key === 'Escape') {
-    // Find the active modal
-    const openModal = document.querySelector('.modal[open]');
-    if (openModal) {
-      // Close the modal
-      closeModal(openModal.id, event);
-      // prevent default escape behavior (like exiting fullscreen or cancel current modal)
-      event.preventDefault();
-    }
-  }
-});
+const handleKeyDown = () => {
+  
+  // Prevent attaching listener twice  
+  if (listenerKeydownAttached) return;
+  listenerKeydownAttached = true;
 
+  document.body.addEventListener('keydown', function (event) {
+    // If the Escape key is pressed
+    if (event.key === 'Escape') {
+      // Find the active modal
+      const openModal = document.querySelector('.modal[open]');
+      if (openModal) {
+        // Close the modal
+        closeModal(openModal.id, event);
+        // prevent default escape behavior (like exiting fullscreen or cancel current modal)
+        event.preventDefault();
+      }
+    }
+  });
+}
 
 /**
  * Toggle the modal with a given ID
@@ -179,9 +192,35 @@ export const closeModal = (id, triggerElement, next) => {
 }
 
 
+/**
+ * Initialize global event listeners.
+ * This function sets up handlers for click and keydown events.
+ * It should be called once after the DOM is ready.
+ */
+const setupListeners = () => {
+  handleClick();
+  handleKeyDown();
+}
+
+
+// Check if the DOM is still loading
+if (document.readyState === 'loading') {
+   // If the DOM isn't fully parsed yet, wait for the DOMContentLoaded event before initializing the event listeners.   
+  document.addEventListener('DOMContentLoaded',setupListeners );
+} else {
+  // If the DOM is already loaded, initialize immediately.
+  setupListeners();
+}
+
+
+
+
 
 // Export the modal utility module
 const modalModule = {
+  handleClick,
+  handleKeyDown,
+  setupListeners,
   openModal,
   closeModal,
   toggleModal
