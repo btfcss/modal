@@ -8,6 +8,18 @@ const eventClosed = new Event("onModalClosed");
 let listenerClickAttached = false;
 let listenerKeydownAttached = false;
 
+
+/**
+ * Initialize global event listeners.
+ * This function sets up handlers for click and keydown events.
+ * It should be called once after the DOM is ready.
+ */
+const setupListeners = () => {
+  handleClick();
+  handleKeyDown();
+}
+
+
 /**
  * Handles modal interactions:
  * - Opens a modal when an element with [data-open-modal] is clicked
@@ -190,28 +202,6 @@ export const closeModal = (id, triggerElement, next) => {
   modalEl.removeEventListener('cancel', onEscapeKeyPressed);
 
 }
-
-
-/**
- * Initialize global event listeners.
- * This function sets up handlers for click and keydown events.
- * It should be called once after the DOM is ready.
- */
-const setupListeners = () => {
-  handleClick();
-  handleKeyDown();
-}
-
-
-// Check if the DOM is still loading
-if (document.readyState === 'loading') {
-   // If the DOM isn't fully parsed yet, wait for the DOMContentLoaded event before initializing the event listeners.   
-  document.addEventListener('DOMContentLoaded',setupListeners );
-} else {
-  // If the DOM is already loaded, initialize immediately.
-  setupListeners();
-}
-
 
 
 
