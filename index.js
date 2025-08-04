@@ -14,7 +14,7 @@ let listenerKeydownAttached = false;
  * This function sets up handlers for click and keydown events.
  * It should be called once after the DOM is ready.
  */
-const setupListeners = () => {
+export const setupListeners = () => {
   handleClick();
   handleKeyDown();
 }
@@ -26,7 +26,7 @@ const setupListeners = () => {
  * - Closes a modal when an element with [data-close-modal] is clicked
  * - Supports clicking outside the modal to close it (if implemented in `closeModal`)
  */
-const handleClick = () => {
+export const handleClick = () => {
   
   // Prevent attaching listener twice
   if (listenerClickAttached) return;
@@ -62,7 +62,7 @@ const handleClick = () => {
  *   - Closes it using closeModal()
  *   - Prevents default Escape behavior (like exiting fullscreen or triggering native dialog cancel)
  */
-const handleKeyDown = () => {
+export const handleKeyDown = () => {
   
   // Prevent attaching listener twice  
   if (listenerKeydownAttached) return;
