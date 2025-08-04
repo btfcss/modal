@@ -13,6 +13,33 @@ npm install @btfcss/modal
 
 ## Usage
 
+### Import and config
+
+The modal library must be imported and initialized by user:
+
+```js
+import { setupListeners } from "@btfcss/modal.js";
+
+// Attach click and keydown events
+setupListeners();
+```
+
+If the library is loaded before the DOM is fully parsed, use the following to postpone initialization:"
+
+```js
+import { setupListeners } from "@btfcss/modal.js";
+
+// Check if the DOM is still loading
+if (document.readyState === 'loading') {
+   // If the DOM isn't fully parsed yet, wait for the DOMContentLoaded event before initializing the event listeners.   
+  document.addEventListener('DOMContentLoaded',setupListeners );
+} else {
+  // If the DOM is already loaded, initialize immediately.
+  setupListeners();
+}
+```
+
+
 ### HTML Structure
 
 Modals use the native `<dialog>` element. The child container must have the `modal-content` class.
